@@ -25,6 +25,14 @@ public class Gift {
     @JoinColumn(name = "target_id")
     private Target target;
 
+    public Gift(String giftUrl, String giftImageUrl, String giftTitle, String giftDescription) {
+        this.giftUrl = giftUrl;
+        this.giftImageUrl = giftImageUrl;
+        this.giftTitle = giftTitle;
+        this.giftDescription = giftDescription;
+        this.isLike = false;
+    }
+
     public void likeToGift() {
         this.isLike = true;
     }

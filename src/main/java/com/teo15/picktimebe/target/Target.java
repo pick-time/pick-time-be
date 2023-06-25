@@ -28,13 +28,21 @@ public class Target {
     private String recipientUrl;
     private String providerName;
     private String consumerName;
-    private Boolean isGift;
 
     @OneToMany(mappedBy = "target", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Gift> giftList;
 
     /*@OneToMany(mappedBy = "target", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Coupon> couponList;*/
+
+    public Target(String cardImageUrl, String message, String providerName, String consumerName, List<Gift> giftList) {
+        this.cardImageUrl = cardImageUrl;
+        this.message = message;
+        this.providerName = providerName;
+        this.consumerName = consumerName;
+        this.giftList = giftList;
+    }
+
 
     public void giftLikeChange(Long id) {
         for (Gift gift : giftList) {
