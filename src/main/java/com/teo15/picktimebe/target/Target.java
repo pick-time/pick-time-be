@@ -52,7 +52,7 @@ public class Target {
         Gift gift = giftList.stream()
                 .filter(filterGift -> filterGift.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("해당 Target에 없는 couponId 입니다."));
+                .orElseThrow(() -> new ResourceNotFoundException("The couponId does not exist for the given Target."));
 
         gift.likeToGift();
         /*for (Coupon coupon : couponList) {

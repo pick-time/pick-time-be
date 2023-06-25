@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.FileSystemException;
 
@@ -19,8 +20,8 @@ public class TargetController {
     private final TargetService targetService;
 
     @PostMapping
-    public ResponseEntity<Long> addTarget(@RequestPart(value="target") PostTargetRequest request) throws FileSystemException {
-        Long targetId = targetService.createTarget(request);
+    public ResponseEntity<Long> addTarget(@RequestPart PostTargetRequest target, MultipartFile file) throws FileSystemException {
+        Long targetId = targetService.createTarget(target, file);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(targetId);
     }

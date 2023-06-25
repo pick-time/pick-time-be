@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @ToString
 public class PostTargetRequest {
-    private MultipartFile cardImage;
     private String cardImageUrl;
     private String cardMessage;
     private String providerName;

@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,16 +22,15 @@ public class TargetService {
     private final S3Uploader s3Uploader;
 
     @Transactional
-    public Long createTarget(PostTargetRequest request) throws FileSystemException {
-        MultipartFile multipartFile = request.getCardImage();
+    public Long createTarget(PostTargetRequest request, MultipartFile file) throws FileSystemException {
         String fileName = "";
-        if(multipartFile != null){ // 파일 업로드한 경우에만
+        if(file != null){ // 파일 업로드한 경우에만
             try{// 파일 업로드
-                fileName = s3Uploader.upload(multipartFile, "images"); // S3 버킷의 images 디렉토리 안에 저장됨
+                fileName = s3Uploader.upload(file, "images"); // S3 버킷의 images 디렉토리 안에 저장됨
                 log.info("fileName = {}", fileName);
                 request.setCardImageUrl(fileName);
             }catch (IOException e){
-                throw new FileSystemException("카드 이미지 파일 저장에 실패하였습니다.");
+                throw new FileSystemException("Failed to save the card image file.");
             }
         }
 
@@ -44,7 +42,7 @@ public class TargetService {
 
     public GetTargetResponse selectTarget(Long targetId) {
         Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the card."));
 
         return new GetTargetResponse(target.getProviderName(), target.getCardImageUrl(), target.getMessage());
     }
@@ -52,7 +50,7 @@ public class TargetService {
     @Transactional
     public Long likeGiftForTarget(Long targetId, Long giftId) {
         Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the card."));
 
         target.giftLikeChange(giftId);
         return target.getId();
@@ -60,7 +58,7 @@ public class TargetService {
 
     public GetFinalTargetResponse getFinalGiftForTarget(Long targetId) {
         Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the card."));
 
         Gift likedGift = target.getLikedGift();
         return new GetFinalTargetResponse(target.getConsumerName(),

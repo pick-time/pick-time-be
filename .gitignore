@@ -6,6 +6,8 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 .src/main/resources/application-dev.properties
+src/main/resources/application-dev.properties
+application-dev.properties
 
 # User-specific stuff
 .idea/**/workspace.xml

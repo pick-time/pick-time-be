@@ -12,7 +12,7 @@ public class GiftService {
 
 //    public List<Gift> getGiftListForTarget(Long targetId) {
 //        List<Gift> gifts = giftRepository.findByTargetId(targetId)
-//                .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
+//                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the card."));
 //        return gifts;
 //    }
 }
