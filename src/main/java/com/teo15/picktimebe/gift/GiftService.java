@@ -1,12 +1,8 @@
 package com.teo15.picktimebe.gift;
 
-import com.teo15.picktimebe.exception.ResourceNotFoundException;
-import com.teo15.picktimebe.target.GetTargetResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

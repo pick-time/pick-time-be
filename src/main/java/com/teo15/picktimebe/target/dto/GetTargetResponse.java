@@ -1,11 +1,11 @@
-package com.teo15.picktimebe.target;
+package com.teo15.picktimebe.target.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
 
 @Getter
+@Setter
+@NoArgsConstructor
 @ToString
 public class GetTargetResponse {
     private String providerName;
