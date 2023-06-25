@@ -1,6 +1,9 @@
 package com.teo15.picktimebe.target;
 
 
+import com.teo15.picktimebe.target.dto.GetFinalTargetResponse;
+import com.teo15.picktimebe.target.dto.GetTargetResponse;
+import com.teo15.picktimebe.target.dto.PostLikeGiftForTargetRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +21,8 @@ public class TargetController {
 
     @PostMapping("/target/{targetId}")
     public ResponseEntity<Long> likeGiftForTarget(@PathVariable("targetId") Long targetId,
-                                               @RequestParam("giftId") Long giftId) {
+                                               @RequestParam Long giftId) {
+
         return ResponseEntity.ok(targetService.likeGiftForTarget(targetId, giftId));
     }
 

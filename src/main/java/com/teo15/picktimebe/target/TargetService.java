@@ -1,6 +1,11 @@
 package com.teo15.picktimebe.target;
 
 import com.teo15.picktimebe.exception.ResourceNotFoundException;
+import com.teo15.picktimebe.gift.Gift;
+import com.teo15.picktimebe.target.dto.GetFinalGiftResponse;
+import com.teo15.picktimebe.target.dto.GetFinalTargetResponse;
+import com.teo15.picktimebe.target.dto.GetTargetResponse;
+import com.teo15.picktimebe.target.dto.PostLikeGiftForTargetRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +36,8 @@ public class TargetService {
         Target target = targetRepository.findById(targetId)
                 .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
 
-        //target.getLikedGift();
-        return new GetFinalTargetResponse();
+        Gift likedGift = target.getLikedGift();
+        return new GetFinalTargetResponse(target.getConsumerName(),
+                new GetFinalGiftResponse(likedGift.getGiftTitle(), likedGift.getGiftImageUrl()));
     }
 }

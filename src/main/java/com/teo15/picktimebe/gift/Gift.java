@@ -1,5 +1,6 @@
 package com.teo15.picktimebe.gift;
 
+import com.teo15.picktimebe.target.Target;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,10 +15,21 @@ public class Gift {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String cardId;
     private String giftUrl;
     private String giftImageUrl;
     private String giftTitle;
     private String giftDescription;
-    private boolean isLike;
+    private Boolean isLike;
+
+    @ManyToOne
+    @JoinColumn(name = "target_id")
+    private Target target;
+
+    public void likeToGift() {
+        this.isLike = true;
+    }
+
+    public void initLike() {
+        this.isLike = false;
+    }
 }
