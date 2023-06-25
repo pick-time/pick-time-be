@@ -41,6 +41,10 @@ public class Target {
         this.providerName = providerName;
         this.consumerName = consumerName;
         this.giftList = giftList;
+
+        for (Gift gift : giftList) {
+            gift.setTarget(this);
+        }
     }
 
 

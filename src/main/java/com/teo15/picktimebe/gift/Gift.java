@@ -24,6 +24,11 @@ public class Gift {
     @ManyToOne
     @JoinColumn(name = "target_id")
     private Target target;
+    
+    public void setTarget(Target target) {
+        this.target = target;
+        target.getGiftList().add(this);
+    }
 
     public Gift(String giftUrl, String giftImageUrl, String giftTitle, String giftDescription) {
         this.giftUrl = giftUrl;
