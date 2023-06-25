@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -65,5 +64,12 @@ public class TargetService {
         Gift likedGift = target.getLikedGift();
         return new GetFinalTargetResponse(target.getConsumerName(),
                 new GetFinalGiftResponse(likedGift.getGiftTitle(), likedGift.getGiftImageUrl()));
+    }
+
+    public GetTargetUserName getTargetUserName(Long targetId) {
+        Target target = targetRepository.findById(targetId)
+                .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
+
+        return new GetTargetUserName(target.getProviderName(), target.getConsumerName());
     }
 }
