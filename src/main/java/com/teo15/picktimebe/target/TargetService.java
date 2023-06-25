@@ -1,6 +1,5 @@
 package com.teo15.picktimebe.target;
 
-import com.teo15.picktimebe.coupon.Coupon;
 import com.teo15.picktimebe.exception.ResourceNotFoundException;
 import com.teo15.picktimebe.gift.Gift;
 import com.teo15.picktimebe.target.dto.GetFinalGiftResponse;
@@ -10,8 +9,6 @@ import com.teo15.picktimebe.target.dto.PostLikeGiftForTargetRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +24,11 @@ public class TargetService {
     }
 
     @Transactional
-    public Long likeGiftForTarget(PostLikeGiftForTargetRequest request) {
-        Target target = targetRepository.findById(request.getTargetId())
+    public Long likeGiftForTarget(Long targetId, Long giftId) {
+        Target target = targetRepository.findById(targetId)
                 .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
 
-        target.giftLikeChange(request.getGiftId(), request.getIsGift());
+        target.giftLikeChange(giftId);
         return target.getId();
     }
 
@@ -39,18 +36,8 @@ public class TargetService {
         Target target = targetRepository.findById(targetId)
                 .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
 
-
-            Optional<Gift> gift = target.getGiftList().stream()
-                    .filter(filterGift -> filterGift.getIsLike().equals(true))
-                    .findFirst();
-            //return new GetFinalTargetResponse(target.getConsumerName(), giftResponse);
-
-            Coupon coupon = target.getCouponList().stream()
-                    .filter(filterCoupon -> filterCoupon.getIsLike().equals(true))
-                    .findFirst()
-                    .orElseThrow(() -> new ResourceNotFoundException("해당 Target에 없는 couponId 입니다."));
-
-            coupon.likeToCoupon();
-        return new GetFinalTargetResponse();
+        Gift likedGift = target.getLikedGift();
+        return new GetFinalTargetResponse(target.getConsumerName(),
+                new GetFinalGiftResponse(likedGift.getGiftTitle(), likedGift.getGiftImageUrl()));
     }
 }

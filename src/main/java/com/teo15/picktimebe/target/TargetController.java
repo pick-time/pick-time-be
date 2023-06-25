@@ -21,10 +21,9 @@ public class TargetController {
 
     @PostMapping("/target/{targetId}")
     public ResponseEntity<Long> likeGiftForTarget(@PathVariable("targetId") Long targetId,
-                                               @RequestBody PostLikeGiftForTargetRequest request) {
-        request.setTargetId(targetId);
+                                               @RequestParam Long giftId) {
 
-        return ResponseEntity.ok(targetService.likeGiftForTarget(request));
+        return ResponseEntity.ok(targetService.likeGiftForTarget(targetId, giftId));
     }
 
     @GetMapping("/{targetId}/final")

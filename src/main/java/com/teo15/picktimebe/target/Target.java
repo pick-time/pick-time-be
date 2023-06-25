@@ -33,14 +33,21 @@ public class Target {
     @OneToMany(mappedBy = "target", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Gift> giftList;
 
-    @OneToMany(mappedBy = "target", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Coupon> couponList;
+    /*@OneToMany(mappedBy = "target", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Coupon> couponList;*/
 
-    public void giftLikeChange(Long id, Boolean isGift) {
+    public void giftLikeChange(Long id) {
         for (Gift gift : giftList) {
             gift.initLike();;
         }
-        for (Coupon coupon : couponList) {
+
+        Gift gift = giftList.stream()
+                .filter(filterGift -> filterGift.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("해당 Target에 없는 couponId 입니다."));
+
+        gift.likeToGift();
+        /*for (Coupon coupon : couponList) {
             coupon.initLike();
         }
 
@@ -58,7 +65,14 @@ public class Target {
                     .orElseThrow(() -> new ResourceNotFoundException("해당 Target에 없는 couponId 입니다."));
 
             coupon.likeToCoupon();
-        }
+        }*/
 
+    }
+
+    public Gift getLikedGift() {
+        return giftList.stream()
+                .filter(gift -> gift.getIsLike())
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("해당 Target에 없는 giftId 입니다."));
     }
 }
