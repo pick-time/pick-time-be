@@ -1,6 +1,7 @@
 package com.teo15.picktimebe.target;
 
 
+import com.teo15.picktimebe.gift.GiftResponse;
 import com.teo15.picktimebe.target.dto.GetFinalTargetResponse;
 import com.teo15.picktimebe.target.dto.GetTargetResponse;
 import com.teo15.picktimebe.target.dto.PostLikeGiftForTargetRequest;
@@ -42,4 +43,10 @@ public class TargetController {
     public ResponseEntity<GetFinalTargetResponse> getFinalGiftForTarget(@PathVariable("targetId") Long targetId) {
         return ResponseEntity.ok(targetService.getFinalGiftForTarget(targetId));
     }
+
+    @GetMapping("/{targetId}/all")
+    public ResponseEntity<GiftResponse> getGiftListByTargetId(@PathVariable("targetId") Long targetId) {
+        return ResponseEntity.ok(targetService.selectByTargetIdGitList(targetId));
+    }
+
 }

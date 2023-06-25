@@ -30,4 +30,11 @@ public class GiftResponse {
 //    public void addCoupon(CouponData coupon) {
 //        this.couponList.add(coupon);
 //    }
+
+    public GiftResponse(int giftTotal, String providerName, String consumerName, List<GiftData> giftList) {
+        this.giftTotal = giftTotal;
+        this.providerName = providerName;
+        this.consumerName = consumerName;
+        this.giftList = giftList;
+    }
 }

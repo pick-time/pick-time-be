@@ -1,10 +1,12 @@
 package com.teo15.picktimebe.gift;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class GiftData {
     private Long giftId;
     private String giftUrl;
@@ -12,4 +14,11 @@ public class GiftData {
     private String giftTitle;
     private String giftDescription;
 
+    public GiftData(Gift gift) {
+        this.giftId = gift.getId();
+        this.giftUrl = gift.getGiftUrl();
+        this.giftImage = gift.getGiftImageUrl();
+        this.giftTitle = gift.getGiftTitle();
+        this.giftDescription = gift.getGiftDescription();
+    }
 }

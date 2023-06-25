@@ -3,6 +3,8 @@ package com.teo15.picktimebe.target;
 import com.teo15.picktimebe.config.S3Uploader;
 import com.teo15.picktimebe.exception.ResourceNotFoundException;
 import com.teo15.picktimebe.gift.Gift;
+import com.teo15.picktimebe.gift.GiftData;
+import com.teo15.picktimebe.gift.GiftResponse;
 import com.teo15.picktimebe.target.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.FileSystemException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +45,7 @@ public class TargetService {
 
     public GetTargetResponse selectTarget(Long targetId) {
         Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the card."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
 
         return new GetTargetResponse(target.getProviderName(), target.getCardImageUrl(), target.getMessage());
     }
@@ -50,7 +53,7 @@ public class TargetService {
     @Transactional
     public Long likeGiftForTarget(Long targetId, Long giftId) {
         Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the card."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
 
         target.giftLikeChange(giftId);
         return target.getId();
@@ -58,7 +61,7 @@ public class TargetService {
 
     public GetFinalTargetResponse getFinalGiftForTarget(Long targetId) {
         Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the card."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
 
         Gift likedGift = target.getLikedGift();
         return new GetFinalTargetResponse(target.getConsumerName(),
@@ -67,8 +70,19 @@ public class TargetService {
 
     public GetTargetUserName getTargetUserName(Long targetId) {
         Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
 
         return new GetTargetUserName(target.getProviderName(), target.getConsumerName());
+    }
+
+    public GiftResponse selectByTargetIdGitList(Long targetId) {
+        Target target = targetRepository.findById(targetId)
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
+
+        return new GiftResponse(target.getGiftList().size(), target.getProviderName(), target.getConsumerName(),
+                target.getGiftList()
+                        .stream()
+                        .map(gift -> new GiftData(gift))
+                        .collect(Collectors.toList()));
     }
 }
