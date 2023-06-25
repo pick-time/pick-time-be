@@ -66,7 +66,6 @@ public class Target {
 
             coupon.likeToCoupon();
         }*/
-
     }
 
     public Gift getLikedGift() {

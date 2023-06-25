@@ -1,7 +1,5 @@
 package com.teo15.picktimebe.target.dto;
-
 import lombok.*;
-
 
 @Getter
 @Setter
