@@ -64,4 +64,11 @@ public class TargetService {
         return new GetFinalTargetResponse(target.getConsumerName(),
                 new GetFinalGiftResponse(likedGift.getGiftTitle(), likedGift.getGiftImageUrl()));
     }
+
+    public GetTargetUserName getTargetUserName(Long targetId) {
+        Target target = targetRepository.findById(targetId)
+                .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
+
+        return new GetTargetUserName(target.getProviderName(), target.getConsumerName());
+    }
 }
