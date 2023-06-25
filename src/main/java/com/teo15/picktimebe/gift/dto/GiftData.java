@@ -1,4 +1,4 @@
-package com.teo15.picktimebe.gift;
+package com.teo15.picktimebe.gift.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,5 +11,4 @@ public class GiftData {
     private String giftImage;
     private String giftTitle;
     private String giftDescription;
-
 }

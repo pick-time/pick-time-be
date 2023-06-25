@@ -8,15 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class CouponService {
-    private final CouponRepository couponRepository;
-    public List<Coupon> getCouponListForTarget(Long targetId) {
-
-        return null;
-    }
-
-}
+//
+//@Service
+//@RequiredArgsConstructor
+//@Transactional(readOnly = true)
+//public class CouponService {
+//    private final CouponRepository couponRepository;
+//    public List<Coupon> getCouponListForTarget(Long targetId) {
+//
+//        return null;
+//    }
+//}
