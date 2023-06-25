@@ -14,9 +14,9 @@ import java.util.List;
 public class GiftService {
     private final GiftRepository giftRepository;
 
-    public List<Gift> getGiftListForTarget(Long targetId) {
-        List<Gift> gifts = giftRepository.findByTargetId(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
-        return gifts;
-    }
+//    public List<Gift> getGiftListForTarget(Long targetId) {
+//        List<Gift> gifts = giftRepository.findByTargetId(targetId)
+//                .orElseThrow(() -> new ResourceNotFoundException("카드를 찾을 수 없습니다."));
+//        return gifts;
+//    }
 }
