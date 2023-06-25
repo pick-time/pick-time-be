@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface GiftRepository extends JpaRepository<Gift, Long> {
-    @Query("SELECT g FROM Gift g WHERE g.target.id = :targetId")
+    //@Query("SELECT g FROM Gift g WHERE g.target_id = :targetId")
     List<Gift> findByTargetId(Long targetId);
 }
 
