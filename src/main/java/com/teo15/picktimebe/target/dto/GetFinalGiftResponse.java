@@ -1,10 +1,12 @@
-package com.teo15.picktimebe.target;
+package com.teo15.picktimebe.target.dto;
 
 import lombok.*;
 
+
 @Getter
+@Setter
+@NoArgsConstructor
 @ToString
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GetFinalGiftResponse {
     private String giftTitle;
     private String giftImageUrl;
