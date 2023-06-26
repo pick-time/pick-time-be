@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,10 +25,15 @@ public class PostTargetRequest {
     private List<PostGiftRequest> giftList;
 
     public Target toEntity() {
-        return new Target(cardImageUrl, cardMessage, providerName, consumerName,
-                giftList.stream()
-                        .map(gift -> new Gift(gift.getGiftUrl(), gift.getGiftImageUrl(),
-                                gift.getGiftTitle(), gift.getGiftDescription()))
-                        .collect(Collectors.toList()));
+        Target target = new Target(cardImageUrl, cardMessage, providerName, consumerName, new ArrayList<>());
+
+        for (PostGiftRequest postGiftRequest : giftList) {
+            Gift gift = new Gift(postGiftRequest.getGiftUrl(), postGiftRequest.getGiftImageUrl(),
+                    postGiftRequest.getGiftTitle(), postGiftRequest.getGiftDescription());
+            gift.setTarget(target);
+            target.getGiftList().add(gift);
+        }
+
+        return target;
     }
 }

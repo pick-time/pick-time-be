@@ -38,6 +38,7 @@ public class Gift {
         this.isLike = false;
     }
 
+
     public void likeToGift() {
         this.isLike = true;
     }

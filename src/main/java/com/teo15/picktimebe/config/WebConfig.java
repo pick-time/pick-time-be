@@ -8,9 +8,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOrigins("https://pick-time.vercel.app")
                 .allowedMethods("*")
-                .allowCredentials(false)
                 .maxAge(3000);
     }
 }

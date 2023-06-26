@@ -32,7 +32,7 @@ public class TargetController {
         return ResponseEntity.ok(targetService.selectTarget(targetId));
     }
 
-    @PostMapping("/target/{targetId}")
+    @PostMapping("/{targetId}")
     public ResponseEntity<Long> likeGiftForTarget(@PathVariable("targetId") Long targetId,
                                                @RequestParam Long giftId) {
 
