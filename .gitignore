@@ -136,6 +136,11 @@ $RECYCLE.BIN/
 .*
 !.gitignore
 !.git*
+!.ebextensions
+!.ebextensions/**
+!.github
+!.github/**
+!.Procfile
 *~
 
 
