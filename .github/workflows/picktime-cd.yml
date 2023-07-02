@@ -52,7 +52,7 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }} # github secrets로 등록한 값 사용
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # github secrets로 등록한 값 사용
-          application_name: TEO-Backend-EB # EB application 이름
+          application_name: TEO-BACKEND-EB # EB application 이름
           environment_name: TEO-Backend-EB-dev # EB environment 이름
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2
