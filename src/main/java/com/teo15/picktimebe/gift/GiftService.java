@@ -1,12 +1,21 @@
 package com.teo15.picktimebe.gift;
 
+import com.teo15.picktimebe.config.S3Uploader;
 import com.teo15.picktimebe.exception.ResourceNotFoundException;
+import com.teo15.picktimebe.gift.dto.GiftData;
+import com.teo15.picktimebe.gift.dto.GiftResponse;
+import com.teo15.picktimebe.gift.dto.PostGiftRequest;
+import com.teo15.picktimebe.gift.dto.UpdateGiftInfoRequest;
 import com.teo15.picktimebe.target.dto.GetTargetUserName;
 import com.teo15.picktimebe.target.TargetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.Document;
+import java.io.IOException;
+import java.nio.file.FileSystemException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,39 +25,39 @@ import java.util.stream.Collectors;
 public class GiftService {
     private final GiftRepository giftRepository;
     private final TargetService targetService;
+    private final S3Uploader s3Uploader;
 
-    public GiftResponse createGiftResponse(Long targetId) {
-        List<GiftData> giftList = getGiftListForTarget(targetId);
-        GetTargetUserName targetUserName = targetService.getTargetUserName(targetId);
-
-        GiftResponse giftResponse = new GiftResponse();
-        giftResponse.setGiftTotal(giftList.size());
-        giftResponse.setProviderName(targetUserName.getProviderName());
-        giftResponse.setConsumerName(targetUserName.getConsumerName());
-        giftResponse.setGiftList(giftList);
-
-        return giftResponse;
+    public GiftResponse selectByTargetIdGitList(Long targetId) {
+        return targetService.selectByTargetIdGitList(targetId);
     }
 
-    public List<GiftData> getGiftListForTarget(Long targetId) {
-        List<Gift> gifts = giftRepository.findByTargetId(targetId);
+    public GiftResponse updateAndgetList(Long giftId, UpdateGiftInfoRequest request, MultipartFile file) throws FileSystemException {
+        Gift gift = giftRepository.findById(giftId)
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Gift."));
 
-        if (gifts.isEmpty()) {
-            throw new ResourceNotFoundException("카드를 찾을 수 없습니다.");
+        String fileName = "";
+        if(file != null){
+            try {
+                fileName = s3Uploader.upload(file, "images");
+                request.setGiftImage(fileName);
+            } catch (IOException e){
+                throw new FileSystemException("Failed to save the card image file.");
+            }
         }
+        Gift updatedGift = request.toEntity(gift);
+        giftRepository.save(updatedGift);
 
-        return gifts.stream()
-                .map(this::convertToGiftData)
-                .collect(Collectors.toList());
+        // gift id type이 coupon이면 쿠폰만 조회후 반환 필요한지 check *****
+        return targetService.selectByTargetIdGitList(updatedGift.getTarget().getId());
     }
 
-    private GiftData convertToGiftData(Gift gift) {
-        GiftData giftData = new GiftData();
-        giftData.setGiftId(gift.getId());
-        giftData.setGiftUrl(gift.getGiftUrl());
-        giftData.setGiftImage(gift.getGiftImageUrl());
-        giftData.setGiftTitle(gift.getGiftTitle());
-        giftData.setGiftDescription(gift.getGiftDescription());
-        return giftData;
+    public GiftResponse createAndgetList(Long targetId, PostGiftRequest request) {
+
+        // https://github.com/siyoon210/ogparser4j/blob/develop/src/main/java/com/github/siyoon210/ogparser4j/htmlparser/OgMetaElement.java
+        try {
+        } catch (Exception e) {
+//            logger.error("Open Graph Error :" , e.getMessage());
+        }
+        return new GiftResponse();
     }
 }

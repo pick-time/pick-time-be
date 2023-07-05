@@ -2,10 +2,14 @@ package com.teo15.picktimebe.gift;
 
 import com.teo15.picktimebe.target.Target;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "gift")
@@ -15,11 +19,18 @@ public class Gift {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
+    private GiftType giftType;
+
     private String giftUrl;
     private String giftImageUrl;
     private String giftTitle;
     private String giftDescription;
     private Boolean isLike;
+    @CreatedDate
+    private LocalDateTime createDate;
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;
 
     @ManyToOne
     @JoinColumn(name = "target_id")
@@ -29,8 +40,20 @@ public class Gift {
         this.target = target;
         target.getGiftList().add(this);
     }
+    public void setGiftTitle(String title){
+        this.giftTitle = title;
+    }
+    public void setGiftDescription(String description){
+        this.giftDescription = description;
+    }
+    public void setGiftImageUrl(String imageUrl){
+        this.giftImageUrl = imageUrl;
+    }
 
-    public Gift(String giftUrl, String giftImageUrl, String giftTitle, String giftDescription) {
+
+    @Builder
+    public Gift(GiftType giftType, String giftUrl, String giftImageUrl, String giftTitle, String giftDescription) {
+        this.giftType = giftType;
         this.giftUrl = giftUrl;
         this.giftImageUrl = giftImageUrl;
         this.giftTitle = giftTitle;

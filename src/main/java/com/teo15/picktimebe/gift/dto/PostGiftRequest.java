@@ -1,4 +1,4 @@
-package com.teo15.picktimebe.gift;
+package com.teo15.picktimebe.gift.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
