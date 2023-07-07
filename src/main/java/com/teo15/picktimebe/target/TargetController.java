@@ -58,7 +58,7 @@ public class TargetController {
      * Target 최종 결정된 선물 조회 API
      * 받는 사람이 결정한 한 개의 선물을 볼 수 있는, 동시에 주는 사람도 받는 사람이 결정한 선물을 확인할 때 요청되는 api ( isLiked )
      */
-    @GetMapping("/{targetId}/pick")
+    @GetMapping("/{targetId}/final")
     public ResponseEntity<Long> likeGiftForTarget(@PathVariable("targetId") Long targetId,
                                                @RequestParam Long giftId) {
 
@@ -69,7 +69,7 @@ public class TargetController {
      * Target 최종 링크 생성 API
      * 받는 사람 최종 상품 1개 선택 후 이걸로 정했어요! 버튼 클릭 시 요청
      */
-    @GetMapping("/{targetId}/final")
+    @GetMapping("/{targetId}/pick")
     public ResponseEntity<GetFinalTargetResponse> getFinalGiftForTarget(@PathVariable("targetId") Long targetId) {
         return ResponseEntity.ok(targetService.getFinalGiftForTarget(targetId));
     }

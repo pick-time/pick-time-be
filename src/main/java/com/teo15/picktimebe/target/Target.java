@@ -29,10 +29,6 @@ public class Target {
     private String consumerName;
     @OneToMany(mappedBy = "target", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Gift> giftList;
-    @CreatedDate
-    private LocalDateTime createDate;
-    @LastModifiedDate
-    private LocalDateTime modifiedDate;
 
     public Target(String providerName, String consumerName){
         this.providerName = providerName;

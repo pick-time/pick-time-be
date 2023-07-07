@@ -27,10 +27,6 @@ public class Gift {
     private String giftTitle;
     private String giftDescription;
     private Boolean isLike;
-    @CreatedDate
-    private LocalDateTime createDate;
-    @LastModifiedDate
-    private LocalDateTime modifiedDate;
 
     @ManyToOne
     @JoinColumn(name = "target_id")

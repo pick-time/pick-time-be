@@ -1,5 +1,6 @@
 package com.teo15.picktimebe.gift.dto;
 
+import com.teo15.picktimebe.gift.Gift;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,4 @@ import java.util.Optional;
 @ToString
 public class PostGiftRequest {
     private String giftUrl;
-    private String giftImageUrl;
-    private String giftTitle;
-    private String giftDescription;
 }

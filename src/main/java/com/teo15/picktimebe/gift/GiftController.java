@@ -24,14 +24,14 @@ public class GiftController {
      */
     @GetMapping("/{targetId}")
     public ResponseEntity<GiftResponse> getGiftListByTargetId(@PathVariable("targetId") Long targetId) {
-        return ResponseEntity.ok(giftService.selectByTargetIdGitList(targetId));
+        return ResponseEntity.ok(giftService.selectByTargetIdGiftList(targetId));
     }
 
     /**
      * TODO 선물생성 - 상품
      */
     @PostMapping("/{targetId}")
-    public ResponseEntity<GiftResponse> createGift(@PathVariable("targetId") Long targetId, @ModelAttribute PostGiftRequest request, @RequestParam(value ="file", required=false) MultipartFile file) throws FileSystemException {
+    public ResponseEntity<GiftResponse> createGift(@PathVariable("targetId") Long targetId, @RequestBody PostGiftRequest request) {
         return ResponseEntity.ok(giftService.createAndgetList(targetId, request));
     }
 

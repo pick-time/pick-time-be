@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.FileSystemException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,10 +42,9 @@ public class TargetService {
     // target이 2개가 생기는 버그 존재
     @Transactional
     public Long updateTarget(Long targetId, PostTargetRequest request, MultipartFile file) throws FileSystemException {
-        String fileName = "";
-
         if(file != null){
             try {
+                String fileName = "";
                 fileName = s3Uploader.upload(file, "images"); // S3 버킷의 images 디렉토리 안에 저장됨
                 log.info("fileName = {}", fileName);
                 request.setCardImageUrl(fileName);
@@ -52,9 +53,7 @@ public class TargetService {
             }
         }
 
-        Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Invalid target ID: " + targetId));
-
+        Target target = getTargetEntity(targetId);
         target.update(request.getCardMessage(), request.getCardImageUrl());
 
         List<Long> giftList = new ArrayList<>(request.getGiftList());
@@ -65,7 +64,6 @@ public class TargetService {
                     .map(giftId -> {
                         Gift gift = giftRepository.findById(giftId)
                                 .orElseThrow(() -> new ResourceNotFoundException("Invalid gift ID: " + giftId));
-                        gift.setTarget(target);
                         target.addGift(gift);
                         return gift;
                     })
@@ -79,24 +77,25 @@ public class TargetService {
 
 
     public GetTargetResponse selectTarget(Long targetId) {
-        Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
+        Target target = getTargetEntity(targetId);
 
         return new GetTargetResponse(target.getProviderName(), target.getCardImageUrl(), target.getMessage());
+    }
+    public Target getTargetEntity(Long targetId){
+        return targetRepository.findById(targetId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid target ID: " + targetId));
     }
 
     @Transactional
     public Long likeGiftForTarget(Long targetId, Long giftId) {
-        Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
+        Target target = getTargetEntity(targetId);
 
         target.giftLikeChange(giftId);
         return target.getId();
     }
 
     public GetFinalTargetResponse getFinalGiftForTarget(Long targetId) {
-        Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
+        Target target = getTargetEntity(targetId);
 
         Gift likedGift = target.getLikedGift();
         return new GetFinalTargetResponse(target.getConsumerName(),
@@ -104,27 +103,32 @@ public class TargetService {
     }
 
     public GetTargetUserName getTargetUserName(Long targetId) {
-        Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
-
+        Target target = getTargetEntity(targetId);
         return new GetTargetUserName(target.getProviderName(), target.getConsumerName());
     }
+    public GiftResponse selectByTargetIdGiftList(Long targetId, GiftType giftType) {
+        Target target = getTargetEntity(targetId);
+        List<GiftData> products = target.getGiftList()
+                .stream()
+                .filter(gift -> gift.getGiftType().equals(GiftType.PRODUCT))
+                .map(gift -> new GiftData(gift))
+                .collect(Collectors.toList());
 
-    public GiftResponse selectByTargetIdGitList(Long targetId) {
-        Target target = targetRepository.findById(targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
+        List<CouponData> coupons = target.getGiftList()
+                .stream()
+                .filter(gift -> gift.getGiftType().equals(GiftType.COUPON))
+                .map(gift -> new CouponData(gift))
+                .collect(Collectors.toList());
 
-        return new GiftResponse(target.getGiftList().size(), target.getProviderName(), target.getConsumerName(),
-                target.getGiftList()
-                        .stream()
-                        .filter(gift -> gift.getGiftType().equals(GiftType.PRODUCT))
-                        .map(gift -> new GiftData(gift))
-                        .collect(Collectors.toList()),
-                target.getGiftList()
-                        .stream()
-                        .filter(gift -> gift.getGiftType().equals(GiftType.COUPON))
-                        .map(gift -> new CouponData(gift))
-                        .collect(Collectors.toList()));
-
+        switch (giftType) {
+            case PRODUCT:
+                return new GiftResponse(products.size(), target.getProviderName(), target.getConsumerName(), products, Collections.emptyList());
+            case COUPON:
+                return new GiftResponse(coupons.size(), target.getProviderName(), target.getConsumerName(), Collections.emptyList(), coupons);
+            default:
+                return new GiftResponse(target.getGiftList().size(), target.getProviderName(), target.getConsumerName(), products, coupons);
+        }
     }
+
+
 }

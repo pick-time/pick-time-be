@@ -34,8 +34,14 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.16'
+}
+tasks.withType(JavaCompile) {
+	options.compilerArgs << "-Xlint:unchecked"
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
