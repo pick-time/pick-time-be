@@ -40,7 +40,6 @@ public class GiftController {
      * req : productTitle ,productName ,productMessage
      * res : List<Gift>
      */
-
     @PutMapping("/{giftId}")
     public ResponseEntity<GiftResponse> updateGiftInfo(@PathVariable("giftId") Long giftId, @ModelAttribute UpdateGiftInfoRequest request, @RequestParam(value ="file", required=false) MultipartFile file) throws FileSystemException {
         return ResponseEntity.ok(giftService.updateAndgetList(giftId, request, file));

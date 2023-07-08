@@ -72,6 +72,7 @@ public class Target {
 
         gift.likeToGift();
     }
+
     public Target update(String message, String cardImageUrl) {
         if (message != null) {
             this.message = message;
