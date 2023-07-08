@@ -39,27 +39,28 @@ public class TargetService {
         return newTarget.getId();
     }
 
-    // target이 2개가 생기는 버그 존재
     @Transactional
     public Long updateTarget(Long targetId, PostTargetRequest request, MultipartFile file) throws FileSystemException {
-        if(file != null){
+        if (file != null) {
             try {
-                String fileName = "";
-                fileName = s3Uploader.upload(file, "images"); // S3 버킷의 images 디렉토리 안에 저장됨
+                String fileName = s3Uploader.upload(file, "images");
                 log.info("fileName = {}", fileName);
                 request.setCardImageUrl(fileName);
-            } catch (IOException e){
+            } catch (IOException e) {
                 throw new FileSystemException("Failed to save the card image file.");
             }
         }
 
         Target target = getTargetEntity(targetId);
         target.update(request.getCardMessage(), request.getCardImageUrl());
+        target.resetGifts();
 
-        List<Long> giftList = new ArrayList<>(request.getGiftList());
-        giftList.addAll(request.getCouponList());
+        /* 아래코드는 타겟 업데이트시 전달받은 coupon, gift list를 추가하는 형태라 아예 업데이트 치는 걸로 수정하고자 합니다.
+        List<Long> giftList = new ArrayList<>();
+        request.getGiftList().ifPresent(giftList::addAll);
+        request.getCouponList().ifPresent(giftList::addAll);
 
-        if (!giftList.isEmpty()){
+        if (!giftList.isEmpty()) {
             List<Gift> gifts = giftList.stream()
                     .map(giftId -> {
                         Gift gift = giftRepository.findById(giftId)
@@ -72,6 +73,23 @@ public class TargetService {
 
         Target saveTarget = targetRepository.save(target);
 
+        return saveTarget.getId();
+        */
+        List<Long> giftList = request.getGiftList().orElse(Collections.emptyList());
+        List<Long> couponList = request.getCouponList().orElse(Collections.emptyList());
+
+        List<Long> combinedList = new ArrayList<>(giftList);
+        combinedList.addAll(couponList);
+
+        List<Gift> gifts = new ArrayList<>();
+        for (Long giftId : combinedList) {
+            Gift gift = giftRepository.findById(giftId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Invalid gift ID: " + giftId));
+            target.addGift(gift);
+            gifts.add(gift);
+        }
+
+        Target saveTarget = targetRepository.save(target);
         return saveTarget.getId();
     }
 
@@ -106,18 +124,21 @@ public class TargetService {
         Target target = getTargetEntity(targetId);
         return new GetTargetUserName(target.getProviderName(), target.getConsumerName());
     }
+
     public GiftResponse selectByTargetIdGiftList(Long targetId, GiftType giftType) {
         Target target = getTargetEntity(targetId);
         List<GiftData> products = target.getGiftList()
                 .stream()
                 .filter(gift -> gift.getGiftType().equals(GiftType.PRODUCT))
                 .map(gift -> new GiftData(gift))
+                .distinct()
                 .collect(Collectors.toList());
 
         List<CouponData> coupons = target.getGiftList()
                 .stream()
                 .filter(gift -> gift.getGiftType().equals(GiftType.COUPON))
                 .map(gift -> new CouponData(gift))
+                .distinct()
                 .collect(Collectors.toList());
 
         switch (giftType) {
@@ -129,6 +150,7 @@ public class TargetService {
                 return new GiftResponse(target.getGiftList().size(), target.getProviderName(), target.getConsumerName(), products, coupons);
         }
     }
+
 
 
 }

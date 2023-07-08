@@ -50,27 +50,28 @@ public class GiftService {
         Gift updatedGift = request.toEntity(gift);
         giftRepository.save(updatedGift);
 
-        return targetService.selectByTargetIdGiftList(updatedGift.getTarget().getId(), GiftType.COUPON);
+        return targetService.selectByTargetIdGiftList(updatedGift.getTarget().getId(), gift.getGiftType());
     }
 
     public GiftResponse createAndgetList(Long targetId, PostGiftRequest request) {
-        GiftData og = null;
+        GiftData og = new GiftData();
+        og.setGiftUrl(request.getGiftUrl());
+
         try {
             OpenGraph page = new OpenGraph(request.getGiftUrl(), true);
-            og = new GiftData();
-            og.setGiftUrl(request.getGiftUrl());
             og.setGiftTitle(getContent(page, "title"));
             og.setGiftDescription(getContent(page, "description"));
             og.setGiftImage(getContent(page, "image"));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            // og 태그에서 가져오지 못하면 기본 이미지로 추가해준다.
+            og.setGiftTitle("선물");
+            og.setGiftImage("https://picktime-image.s3.ap-northeast-2.amazonaws.com/images/KakaoTalk_Photo_2023-01-27-00-54-47%20%281%29.png");
         }
 
         Target target = targetService.getTargetEntity(targetId);
 
-        Gift updatedGift = og.toEntity();
-        updatedGift.setTarget(target);
+        Gift updatedGift = og.toEntity(target); // nullable check
         giftRepository.save(updatedGift);
 
         return targetService.selectByTargetIdGiftList(targetId, GiftType.PRODUCT);

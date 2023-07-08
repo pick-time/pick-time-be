@@ -10,6 +10,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -19,16 +20,6 @@ import java.util.stream.Collectors;
 public class PostTargetRequest {
     private String cardImageUrl;
     private String cardMessage;
-    private List<Long> giftList;
-    private List<Long> couponList;
-    /*
-    public Target toEntity() {
-        Target target = Target.builder()
-                .cardImageUrl(cardImageUrl)
-                .message(cardMessage)
-                .giftList(new ArrayList<>())
-                .build();
-
-        return target;
-    }*/
+    private Optional<List<Long>> giftList;
+    private Optional<List<Long>> couponList;
 }

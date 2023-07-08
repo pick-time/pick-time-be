@@ -39,10 +39,6 @@ public class GiftController {
      * 선물 수정 API
      * req : productTitle ,productName ,productMessage
      * res : List<Gift>
-     *
-     * check 필요 ) 1. 상품, 쿠폰 모두 1개 수정 api로 가져갈지.
-     *                -> 그렇다면 상품인 경우 상품 list만 보낼지 쿠폰 list도 모두 보낼지
-     *             2. 상품, 쿠폰 API 각각 가져갈지.
      */
 
     @PutMapping("/{giftId}")
