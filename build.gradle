@@ -33,7 +33,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	runtimeOnly 'com.h2database:h2'
+	testRuntimeOnly 'com.h2database:h2'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 	implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.16'
