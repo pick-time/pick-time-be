@@ -11,6 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UpdateGiftInfoRequest {
+
     private String giftTitle;
     private String giftDescription;
     private String giftImage;
