@@ -35,6 +35,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'com.h2database:h2'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation 'io.rest-assured:rest-assured:4.4.0'
+	implementation 'com.google.guava:guava:31.1-jre'
 
 	implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.16'
 }

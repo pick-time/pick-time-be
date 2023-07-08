@@ -18,7 +18,6 @@ import java.util.List;
 public class Target {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "target_id")
     private Long id;
 
     private String cardImageUrl;
