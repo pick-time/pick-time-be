@@ -22,4 +22,11 @@ public class PostTargetRequest {
     private String cardMessage;
     private Optional<List<Long>> giftList;
     private Optional<List<Long>> couponList;
+
+    public PostTargetRequest(String cardImageUrl, String cardMessage, Optional<List<Long>> giftList, Optional<List<Long>> couponList) {
+        this.cardImageUrl = cardImageUrl;
+        this.cardMessage = cardMessage;
+        this.giftList = giftList;
+        this.couponList = couponList;
+    }
 }
