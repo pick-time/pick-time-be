@@ -29,10 +29,6 @@ public class Target {
     private String consumerName;
     @OneToMany(mappedBy = "target", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Gift> giftList;
-    @CreatedDate
-    private LocalDateTime createDate;
-    @LastModifiedDate
-    private LocalDateTime modifiedDate;
 
     public Target(String providerName, String consumerName){
         this.providerName = providerName;
@@ -52,6 +48,13 @@ public class Target {
         }
     }
 
+    public void resetGifts() {
+        for (Gift gift : giftList) {
+            gift.setTarget(null);
+        }
+        giftList.clear();
+    }
+
     public void addGift(Gift gift) {
         giftList.add(gift);
         gift.setTarget(this);
@@ -68,26 +71,6 @@ public class Target {
                 .orElseThrow(() -> new ResourceNotFoundException("The giftId does not exist for the given Target."));
 
         gift.likeToGift();
-        /*for (Coupon coupon : couponList) {
-            coupon.initLike();
-        }
-
-        if(isGift) {
-            Gift gift = giftList.stream()
-                    .filter(filterGift -> filterGift.getId().equals(id))
-                    .findFirst()
-                    .orElseThrow(() -> new ResourceNotFoundException("해당 Target에 없는 couponId 입니다."));
-
-            gift.likeToGift();
-        }else {
-            Coupon coupon = couponList.stream()
-                    .filter(filterCoupon -> filterCoupon.getId().equals(id))
-                    .findFirst()
-                    .orElseThrow(() -> new ResourceNotFoundException("해당 Target에 없는 couponId 입니다."));
-
-            coupon.likeToCoupon();
-        }*/
-
     }
     public Target update(String message, String cardImageUrl) {
         if (message != null) {

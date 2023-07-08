@@ -27,18 +27,16 @@ public class Gift {
     private String giftTitle;
     private String giftDescription;
     private Boolean isLike;
-    @CreatedDate
-    private LocalDateTime createDate;
-    @LastModifiedDate
-    private LocalDateTime modifiedDate;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JoinColumn(name = "target_id")
     private Target target;
     
     public void setTarget(Target target) {
         this.target = target;
-        target.getGiftList().add(this);
+        if(target != null) {
+            target.getGiftList().add(this);
+        }
     }
     public void setGiftTitle(String title){
         this.giftTitle = title;
@@ -47,17 +45,20 @@ public class Gift {
         this.giftDescription = description;
     }
     public void setGiftImageUrl(String imageUrl){
-        this.giftImageUrl = imageUrl;
+        if (!imageUrl.isBlank()) {
+            this.giftImageUrl = imageUrl;
+        }
     }
 
 
     @Builder
-    public Gift(GiftType giftType, String giftUrl, String giftImageUrl, String giftTitle, String giftDescription) {
+    public Gift(GiftType giftType, String giftUrl, String giftImageUrl, String giftTitle, String giftDescription,Target target) {
         this.giftType = giftType;
         this.giftUrl = giftUrl;
         this.giftImageUrl = giftImageUrl;
         this.giftTitle = giftTitle;
         this.giftDescription = giftDescription;
+        this.target = target;
         this.isLike = false;
     }
 

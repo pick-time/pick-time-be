@@ -1,6 +1,8 @@
 package com.teo15.picktimebe.gift.dto;
 
 import com.teo15.picktimebe.gift.Gift;
+import com.teo15.picktimebe.gift.GiftType;
+import com.teo15.picktimebe.target.Target;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,5 +23,17 @@ public class GiftData {
         this.giftImage = gift.getGiftImageUrl();
         this.giftTitle = gift.getGiftTitle();
         this.giftDescription = gift.getGiftDescription();
+    }
+
+    public Gift toEntity(Target target){
+        return Gift.builder()
+                .giftDescription(giftDescription)
+                .giftTitle(giftTitle)
+                .giftUrl(giftUrl)
+                .giftImageUrl(giftImage)
+                .giftType(GiftType.PRODUCT)
+                .target(target)
+                .build();
+
     }
 }

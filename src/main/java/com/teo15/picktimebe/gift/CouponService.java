@@ -6,6 +6,7 @@ import com.teo15.picktimebe.gift.dto.CouponResponse;
 import com.teo15.picktimebe.gift.dto.PostCouponRequest;
 import com.teo15.picktimebe.target.Target;
 import com.teo15.picktimebe.target.TargetRepository;
+import com.teo15.picktimebe.target.TargetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.nio.file.FileSystemException;
 public class CouponService {
     private final GiftRepository giftRepository;
     private final TargetRepository targetRepository;
+    private final TargetService targetService;
     private final S3Uploader s3Uploader;
     @Transactional
     public Long createCoupon(PostCouponRequest request, MultipartFile file) throws FileSystemException {
@@ -37,8 +39,7 @@ public class CouponService {
             }
         }
 
-        Target target = targetRepository.findById(request.targetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Target."));
+        Target target = targetService.getTargetEntity(request.targetId);
 
         Gift gift = request.toEntity();
         gift.setTarget(target);

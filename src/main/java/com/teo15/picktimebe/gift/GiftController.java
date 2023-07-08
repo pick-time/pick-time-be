@@ -24,14 +24,14 @@ public class GiftController {
      */
     @GetMapping("/{targetId}")
     public ResponseEntity<GiftResponse> getGiftListByTargetId(@PathVariable("targetId") Long targetId) {
-        return ResponseEntity.ok(giftService.selectByTargetIdGitList(targetId));
+        return ResponseEntity.ok(giftService.selectByTargetIdGiftList(targetId));
     }
 
     /**
      * TODO 선물생성 - 상품
      */
     @PostMapping("/{targetId}")
-    public ResponseEntity<GiftResponse> createGift(@PathVariable("targetId") Long targetId, @ModelAttribute PostGiftRequest request, @RequestParam(value ="file", required=false) MultipartFile file) throws FileSystemException {
+    public ResponseEntity<GiftResponse> createGift(@PathVariable("targetId") Long targetId, @RequestBody PostGiftRequest request) {
         return ResponseEntity.ok(giftService.createAndgetList(targetId, request));
     }
 
@@ -39,10 +39,6 @@ public class GiftController {
      * 선물 수정 API
      * req : productTitle ,productName ,productMessage
      * res : List<Gift>
-     *
-     * check 필요 ) 1. 상품, 쿠폰 모두 1개 수정 api로 가져갈지.
-     *                -> 그렇다면 상품인 경우 상품 list만 보낼지 쿠폰 list도 모두 보낼지
-     *             2. 상품, 쿠폰 API 각각 가져갈지.
      */
 
     @PutMapping("/{giftId}")
