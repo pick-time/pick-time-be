@@ -52,7 +52,6 @@ public class GiftController {
      * req : productTitle ,productName ,productMessage
      * res : List<Gift>
      */
-
     @PutMapping("/{giftId}")
     @ApiOperation(value = "선물 수정", notes = "선물을 수정하고, 선물 리스트와 주는사람 받는사람 이름을 응답", response = GiftResponse.class)
     public ResponseEntity<GiftResponse> updateGiftInfo(@PathVariable("giftId") Long giftId, @ModelAttribute UpdateGiftInfoRequest request, @RequestParam(value ="file", required=false) MultipartFile file) throws FileSystemException {

@@ -18,7 +18,6 @@ import java.util.List;
 public class Target {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "target_id")
     private Long id;
 
     private String cardImageUrl;
@@ -72,6 +71,7 @@ public class Target {
 
         gift.likeToGift();
     }
+
     public Target update(String message, String cardImageUrl) {
         if (message != null) {
             this.message = message;
