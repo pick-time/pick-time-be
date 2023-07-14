@@ -42,7 +42,6 @@ public class GiftController {
      * TODO 선물생성 - 상품
      */
     @PostMapping("/{targetId}")
-    @CrossOrigin(origins = {"https://api.picktime.store","https://pick-time.vercel.app", "http://192.168.219.101:3000", "http://localhost:3000"})
     @ApiOperation(value = "선물 생성", notes = "선물을 생성하고, 선물 리스트와 주는사람 받는사람 이름을 응답", response = GiftResponse.class)
     public ResponseEntity<GiftResponse> createGift(@PathVariable("targetId") Long targetId, @RequestBody PostGiftRequest request) {
         return ResponseEntity.ok(giftService.createAndgetList(targetId, request));
