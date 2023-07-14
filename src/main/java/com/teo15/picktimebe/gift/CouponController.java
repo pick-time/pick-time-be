@@ -17,7 +17,6 @@ import java.nio.file.FileSystemException;
 
 @RestController
 @RequestMapping("/coupon")
-@CrossOrigin(originPatterns = {"https://pick-time.vercel.app", "http://192.168.219.101:3000", "http://localhost:3000"})
 @ApiResponses({
         @ApiResponse(code = 200, message = "Success"),
         @ApiResponse(code = 400, message = "Bad Request"),

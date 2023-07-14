@@ -9,9 +9,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://pick-time.vercel.app", "http://192.168.219.101:3000", "http://localhost:3000")
+                .allowedOriginPatterns("https://pick-time.vercel.app", "http://192.168.219.101:3000", "http://localhost:3000")
                 .allowedMethods("*")
-                .allowedHeaders("Content-Type")
+                .allowedHeaders("*")
                 .exposedHeaders("Content-Type")
                 .allowCredentials(true)
                 .maxAge(3000);
