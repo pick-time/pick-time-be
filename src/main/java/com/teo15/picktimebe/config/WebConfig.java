@@ -11,6 +11,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("https://pick-time.vercel.app", "http://192.168.219.101:3000", "http://localhost:3000")
                 .allowedMethods("*")
+                .allowedHeaders("Content-Type")
+                .exposedHeaders("Content-Type")
+                .allowCredentials(true)
                 .maxAge(3000);
     }
 }
