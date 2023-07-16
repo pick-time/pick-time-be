@@ -10,11 +10,11 @@ import lombok.*;
 public class GetTargetResponse {
     private String providerName;
     private String cardImageUrl;
-    private String cardMeesage;
+    private String cardMessage;
 
-    public GetTargetResponse(String providerName, String cardImageUrl, String cardMeesage) {
+    public GetTargetResponse(String providerName, String cardImageUrl, String cardMessage) {
         this.providerName = providerName;
         this.cardImageUrl = cardImageUrl;
-        this.cardMeesage = cardMeesage;
+        this.cardMessage = cardMessage;
     }
 }
