@@ -117,7 +117,7 @@ public class TargetService {
 
         Gift likedGift = target.getLikedGift();
         return new GetFinalTargetResponse(target.getConsumerName(),
-                new GetFinalGiftResponse(likedGift.getGiftTitle(), likedGift.getGiftImageUrl()));
+                new GetFinalGiftResponse(likedGift.getGiftTitle(), likedGift.getGiftImageUrl(), likedGift.getGiftUrl()));
     }
 
     public GetTargetUserName getTargetUserName(Long targetId) {
