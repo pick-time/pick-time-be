@@ -8,12 +8,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.FileSystemException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/gift")
@@ -57,4 +57,16 @@ public class GiftController {
     public ResponseEntity<GiftResponse> updateGiftInfo(@PathVariable("giftId") Long giftId, @ModelAttribute UpdateGiftInfoRequest request, @RequestParam(value ="file", required=false) MultipartFile file) throws FileSystemException {
         return ResponseEntity.ok(giftService.updateAndgetList(giftId, request, file));
     }
+
+    /**
+     * 선물 삭제 API
+     * req : targetId
+     */
+    @DeleteMapping("/{targetId}")
+    @ApiOperation(value = "선물 삭제", notes = "선물을 삭제하고, 성공시 204 No Content를 응답")
+    public ResponseEntity<Void> removeGift(@PathVariable("targetId") Long targetId) {
+        giftService.deleteGift(targetId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }

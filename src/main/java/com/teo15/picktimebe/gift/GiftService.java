@@ -84,4 +84,9 @@ public class GiftService {
             return "태그 없음";
         }
     }
+
+    @Transactional
+    public void deleteGift(Long targetId) {
+        giftRepository.deleteById(targetId);
+    }
 }
