@@ -14,12 +14,10 @@ public class UpdateGiftInfoRequest {
 
     private String giftTitle;
     private String giftDescription;
-    private String giftImage;
 
-    public UpdateGiftInfoRequest(String giftTitle, String giftDescription, String giftImage){
+    public UpdateGiftInfoRequest(String giftTitle, String giftDescription){
         this.giftTitle = giftTitle;
         this.giftDescription = giftDescription;
-        this.giftImage = giftImage;
     }
 
     public Gift toEntity(Gift gift){
@@ -28,9 +26,6 @@ public class UpdateGiftInfoRequest {
         }
         if (giftDescription != null) {
             gift.setGiftDescription(giftDescription);
-        }
-        if (giftImage != null) {
-            gift.setGiftImageUrl(giftImage);
         }
         return gift;
     }

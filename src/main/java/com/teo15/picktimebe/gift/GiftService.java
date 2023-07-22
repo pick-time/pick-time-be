@@ -33,6 +33,7 @@ public class GiftService {
         return targetService.selectByTargetIdGiftList(targetId, GiftType.TOTAL);
     }
 
+    @Transactional
     public GiftResponse updateAndgetList(Long giftId, UpdateGiftInfoRequest request, MultipartFile file) throws FileSystemException {
         Gift gift = giftRepository.findById(giftId)
                 .orElseThrow(() -> new ResourceNotFoundException("Unable to find the Gift."));
@@ -41,12 +42,12 @@ public class GiftService {
         if (file != null) {
             try {
                 fileName = s3Uploader.upload(file, "images");
+                gift.setGiftImageUrl(fileName);
             } catch (IOException e) {
                 throw new FileSystemException("Failed to save the card image file.");
             }
         }
 
-        gift.setGiftImageUrl(fileName);
         Gift updatedGift = request.toEntity(gift);
         giftRepository.save(updatedGift);
 
