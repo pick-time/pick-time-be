@@ -33,7 +33,7 @@ public class GiftController {
      * 주는 사람이 생성한 선물 목록을 확인하는 페이지에 진입할때 요청
      */
     @GetMapping("/{targetId}")
-    @ApiOperation(value = "선물 조회", notes = "주는 사람이 생성한 선물 목록을 확인하는 페이지에 진입할때 요청", response = GiftResponse.class)
+    @ApiOperation(value = "선물 조회", notes = "주는 사람이 생성한 선물 목록을 확인하는 페이지에 진입할때 요청.", response = GiftResponse.class)
     public ResponseEntity<GiftResponse> getGiftListByTargetId(@PathVariable("targetId") Long targetId) {
         return ResponseEntity.ok(giftService.selectByTargetIdGiftList(targetId));
     }
