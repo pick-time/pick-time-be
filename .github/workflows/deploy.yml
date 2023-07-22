@@ -34,15 +34,21 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
         
-    # (3) 권한 설정
+    # (3) application properties 파일 새로 만들기 
+    - uses: actions/checkout@v3
+    - run: touch ./src/main/resources/application.properties
+    - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.properties
+    - run: cat ./src/main/resources/application.properties
+        
+    # (4) 권한 설정
     - name: Run chmod to make gradlew executable
       run: chmod +x gradlew
       
-    # (3) Gradle build (Test 제외)
+    # (5) Gradle build (Test 제외)
     - name: Build with Gradle
       run: ./gradlew clean build -x test
 
-    # (4) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
+    # (6) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -50,7 +56,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    # (5) 빌드 결과물을 S3 버킷에 업로드
+    # (7) 빌드 결과물을 S3 버킷에 업로드
     - name: Upload to AWS S3
       run: |
         aws deploy push \
@@ -59,7 +65,7 @@ jobs:
           --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
           --source .
 
-    # (6) S3 버킷에 있는 파일을 대상으로 CodeDeploy 실행
+    # (8) S3 버킷에 있는 파일을 대상으로 CodeDeploy 실행
     - name: Deploy to AWS EC2 from S3
       run: |
         aws deploy create-deployment \
